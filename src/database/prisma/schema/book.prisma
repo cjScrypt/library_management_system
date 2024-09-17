@@ -1,0 +1,8 @@
+model Book {
+    id                  Int     @id @default(autoincrement())
+    title               String
+    author              String
+    copiesAvailable     Int
+    pages               Int
+    records             Record[]
+}

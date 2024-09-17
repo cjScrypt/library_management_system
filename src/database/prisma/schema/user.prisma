@@ -1,0 +1,8 @@
+model User {
+    id          Int         @id @default(autoincrement())
+    createdAt   DateTime    @default(now())
+    username    String      @unique
+    password    String
+    isAdmin     Boolean
+    records     Record[]
+}
