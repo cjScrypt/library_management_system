@@ -1,5 +1,8 @@
 const { UserRepository } = require("../database/repository");
-const { hashPassword } = require("../utils");
+const {
+    generateJwtSignature, hashPassword,
+    verifyPassword
+} = require("../utils");
 
 const { ServiceError } = require("../utils/appErrors");
 
@@ -18,6 +21,20 @@ class UserService {
             username,
             password: hashedPassword
         });
+    }
+
+    async login(username, password) {
+        const user = await this.repository.findUser({ username });
+        if (!user) {
+            throw new ServiceError("Invalid username or password.");
+        }
+        const isValidPassword = await verifyPassword(password, user.password);
+        if (!isValidPassword) {
+            throw new ServiceError("Invalid username or password.");
+        }
+        const token = generateJwtSignature({ id: user.id });
+
+        return { token }
     }
 }
 

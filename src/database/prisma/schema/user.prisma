@@ -3,6 +3,6 @@ model User {
     createdAt   DateTime    @default(now())
     username    String      @unique
     password    String
-    isAdmin     Boolean
+    isAdmin     Boolean     @default(false)
     records     Record[]
 }
