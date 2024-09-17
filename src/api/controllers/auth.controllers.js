@@ -32,6 +32,20 @@ class AuthController {
             next(error);
         }
     }
+
+    async Logout(req, res, next) {
+        try {
+            req.logout();
+
+            const resData = {
+                message: "User successfully logged out."
+            }
+
+            return formatResponse(res, 200, resData);
+        } catch(error) {
+            next(error);
+        }
+    }
 }
 
 

@@ -36,6 +36,14 @@ class UserService {
 
         return { token }
     }
+
+    async getProfile(userId) {
+        const user = await this.repository.findUser({ id: userId });
+        if (!user) {
+            throw new ServiceError("User not found");
+        }
+        return user;
+    }
 }
 
 module.exports = UserService;

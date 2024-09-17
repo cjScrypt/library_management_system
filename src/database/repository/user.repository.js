@@ -3,8 +3,7 @@ const prisma = require("../prisma/client");
 
 
 class UserRepository {
-    constructor() {
-    }
+    constructor() {}
 
     async createUser({ username, password }) {
         const data = { username, password }
@@ -17,6 +16,9 @@ class UserRepository {
         const user = prisma.user.findFirst({
             where: filter
         });
+        if (!user) {
+            return false;
+        }
 
         return user;
     }

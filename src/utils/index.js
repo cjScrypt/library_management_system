@@ -10,7 +10,7 @@ const formatResponse = (res, statusCode, data={}, headers={}) => {
 
 
 const generateJwtSignature = (payload) => {
-    return jwt.sign(payload, JWT_SECRET);
+    return jwt.sign(payload, JWT_SECRET, { expiresIn: "2 days", algorithm: "HS256" });
 }
 
 

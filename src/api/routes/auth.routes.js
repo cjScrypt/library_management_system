@@ -22,5 +22,13 @@ module.exports = (() => {
         controller.Login.bind(controller)
     );
 
+    /**
+     *
+     */
+    router.post(
+        "/logout",
+        controller.Logout.bind(controller)
+    );
+
     return router;
 })();
