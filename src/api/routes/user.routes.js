@@ -20,7 +20,10 @@ module.exports = (() => {
     /**
      * 
      */
-    router.
+    router.put(
+        "/",
+        controller.UpdateProfile.bind(controller)
+    );
 
     return router;
 })();

@@ -44,6 +44,15 @@ class UserService {
         }
         return user;
     }
+
+    async updateProfile(userId, updateData) {
+        delete updateData['password'];
+
+        const success = await this.repository.update(userId, updateData);
+        if (!success) {
+            throw new ServiceError("Profile update not successful. Try again");
+        }
+    }
 }
 
 module.exports = UserService;

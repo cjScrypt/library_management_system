@@ -22,6 +22,18 @@ class UserRepository {
 
         return user;
     }
+
+    async update(id, data) {
+        try {
+            const updatedUser = await prisma.user.update({
+                where: { id: id },
+                data: data
+            });
+            return true;
+        } catch(error) {
+            return false;
+        }
+    }
 }
 
 
