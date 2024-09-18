@@ -5,6 +5,28 @@ const prisma = require("../prisma/client");
 class UserRepository {
     constructor() {}
 
+    async addRecord(userId, bookId) {
+        const recordData = { 
+            status: "BORROWED",
+            dateBorrowed: new Date(),
+            bookId,
+        }
+
+        const result = await prisma.user.update({
+            where: { id: userId },
+            data: {
+                records: {
+                    create: [ recordData ]
+                },
+            },
+            include: { posts: true }
+        });
+
+        const records = result.records;
+
+        return records[records.length - 1];
+    }
+
     async createUser({ username, password }) {
         const data = { username, password }
         const user = await prisma.user.create({ data });
