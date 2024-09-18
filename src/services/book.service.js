@@ -1,10 +1,12 @@
-const { BookRepository, UserRepository } = require("../database/repository");
+const { BookRepository, RecordRepository, UserRepository } = require("../database/repository");
 const { ServiceError } = require("../utils/appErrors");
 
 
 class BookService {
     constructor() {
         this.repository = new BookRepository();
+        this.recordRepo = new RecordRepository();
+
         this.userRepo = new UserRepository();
     }
 
@@ -33,6 +35,18 @@ class BookService {
         const record = await this.userRepo.addRecord(userId, book.id);
 
         return record;
+    }
+
+    async recordReturn(isbn, userId) {
+        const record = await this.recordRepo.getBorrowedBookRecord({ bookId: isbn, userId });
+        const updateData = {
+            status: "RETURN",
+            dateReturned: new Date()
+        }
+
+        const updatedRecord = await this.recordRepo.update(record.id, updateData);
+
+        return updatedRecord;
     }
 }
 

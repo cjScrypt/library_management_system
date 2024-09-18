@@ -28,5 +28,13 @@ module.exports = (() => {
     router.post(
         "/borrow",
         controller.BorrowBook.bind(controller)
+    );
+
+    /**
+     * 
+     */
+    router.post(
+        "/return",
+        controller.ReturnBook.bind(controller)
     )
 })

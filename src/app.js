@@ -1,7 +1,10 @@
 const express = require("express");
 const cors = require("cors");
 
-const { AuthRouter } = require("./api/routes");
+const {
+    AdminRouter, AuthRouter,
+    BookRouter, UserRouter
+} = require("./api/routes");
 
 module.exports = (app) => {
 
@@ -10,4 +13,6 @@ module.exports = (app) => {
     app.use(cors());
 
     app.use("/auth", AuthRouter);
+    app.use("/admin", AdminRouter);
+    app.use("/user", UserRouter);
 }

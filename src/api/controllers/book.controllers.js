@@ -40,6 +40,21 @@ class BookController {
             next(error);
         }
     }
+
+    async ReturnBook(req, res, next) {
+        try {
+            const { isbn } = req.body;
+            const { userId } = req.user.id;
+
+            await this.service.recordReturn(isbn, userId);
+
+            const responseData = { message: "Successful returned book." }
+
+            return formatResponse(res, 200, )
+        } catch(error) {
+            next(error);
+        }
+    }
 }
 
 
