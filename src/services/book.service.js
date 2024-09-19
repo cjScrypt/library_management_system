@@ -10,6 +10,12 @@ class BookService {
         this.userRepo = new UserRepository();
     }
 
+    async addBook({ title, author, isbn, copiesAvailable, pages }) {
+        const book = await this.repository.createBook({ id: isbn, title, author, copiesAvailable, pages });
+
+        return book;
+    }
+
     async listBooks({ offset, limit }) {
         const books = await this.repository.getBooks({ filter: {}, offset, limit });
 
@@ -47,6 +53,20 @@ class BookService {
         const updatedRecord = await this.recordRepo.update(record.id, updateData);
 
         return updatedRecord;
+    }
+
+    async updateBook(bookId, updateData) {
+        const success = await this.repository.update(bookId, updateData);
+        if (!success) {
+            throw new ServiceError("Update operation failed. Try again.");
+        }
+    }
+
+    async deleteBook(bookId) {
+        const success = await this.repository.delete({ id: bookId });
+        if (!success) {
+            throw new ServiceError("Delete operation failed. Try again.");
+        }
     }
 }
 

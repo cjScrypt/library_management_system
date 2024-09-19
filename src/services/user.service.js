@@ -12,7 +12,7 @@ class UserService {
     }
 
     async signUp(username, password) {
-        const existingUser = await this.repository.findUser({ username });
+        const existingUser = await this.repository.getUser({ username });
         if (existingUser) {
             throw new ServiceError("User with this username exists");
         }
@@ -24,7 +24,7 @@ class UserService {
     }
 
     async login(username, password) {
-        const user = await this.repository.findUser({ username });
+        const user = await this.repository.getUser({ username });
         if (!user) {
             throw new ServiceError("Invalid username or password.");
         }
@@ -37,8 +37,14 @@ class UserService {
         return { token }
     }
 
+    async getAllUsers({ offset, limit }) {
+        const users = await this.repository.getUsers({}, offset, limit);
+
+        return users;
+    }
+
     async getProfile(userId) {
-        const user = await this.repository.findUser({ id: userId });
+        const user = await this.repository.getUser({ id: userId });
         if (!user) {
             throw new ServiceError("User not found");
         }

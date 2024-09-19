@@ -13,7 +13,7 @@ const configPassport = () => {
         algorithms: ["HS256"],
     }
     const strategy = new Strategy(options, async (payload, done) => {
-        const user = await userRepo.findUser({ id: payload.id });
+        const user = await userRepo.getUser({ id: payload.id });
         if (user) {
             done(null, user);
         } else {

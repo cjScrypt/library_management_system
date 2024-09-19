@@ -1,4 +1,3 @@
-const { PrismaClient } = require("@prisma/client");
 const prisma = require("../prisma/client");
 
 
@@ -7,7 +6,7 @@ class UserRepository {
 
     async addRecord(userId, bookId) {
         const recordData = { 
-            status: "BORROWED",
+            status: "BORROW",
             dateBorrowed: new Date(),
             bookId,
         }
@@ -34,8 +33,8 @@ class UserRepository {
         return user;
     }
 
-    async findUser(filter) {
-        const user = prisma.user.findFirst({
+    async getUser(filter={}) {
+        const user = await prisma.user.findFirst({
             where: filter
         });
         if (!user) {
@@ -45,11 +44,21 @@ class UserRepository {
         return user;
     }
 
-    async update(id, data) {
+    async getUsers(filter={}, offset=0, limit=20) {
+        const users = await prisma.user.findMany({
+            where: filter,
+            skip: offset,
+            take: limit
+        });
+
+        return users;
+    }
+
+    async update(bookId, updateData) {
         try {
             const updatedUser = await prisma.user.update({
-                where: { id: id },
-                data: data
+                where: { id: bookId },
+                data: updateData
             });
             return true;
         } catch(error) {
