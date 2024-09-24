@@ -51,6 +51,8 @@ module.exports = (() => {
      */
     router.delete(
         "/reserve",
-        controller.DeleteReservedBook(controller)
+        controller.DeleteBookReservation.bind(controller)
     );
-})
+
+    return router;
+})();

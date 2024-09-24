@@ -84,9 +84,9 @@ class BookService {
     }
 
     async deleteBookReservation(bookId, userId) {
-        const obj = await this.reservationRepo.getReservation(bookId, userId);
+        const obj = await this.reservationRepo.get(bookId, userId);
         if (!obj) {
-            throw new ServiceError("You do not have a reservation for this book. Try checking for it availability. If not available, you can create a reservation.");
+            throw new ServiceError("You do not have a reservation for this book. Check its availabilty and create one if needed.");
         }
         await this.reservationRepo.delete(obj.id);
     }
