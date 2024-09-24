@@ -2,6 +2,14 @@ const prisma = require("../prisma/client");
 
 
 class RecordRepository {
+    async get(filter) {
+        const record = await prisma.record.findFirst({
+            where: filter
+        });
+
+        return record;
+    }
+
     async getBorrowedBookRecord({ bookId, userId }) {
         const record = await prisma.record.findFirst({
             where: {

@@ -20,10 +20,18 @@ class BookService {
         return book;
     }
 
-    async listBooks({ offset, limit }) {
-        const books = await this.repository.getBooks({ filter: {}, offset, limit });
-
-        return books;
+    async deleteBook(bookId) {
+        const success = await this.repository.delete({ id: bookId });
+        if (!success) {
+            throw new ServiceError("Delete operation failed. Try again.");
+        }
+    }
+    async deleteBookReservation(bookId, userId) {
+        const obj = await this.reservationRepo.get(bookId, userId);
+        if (!obj) {
+            throw new ServiceError("You do not have a reservation for this book. Check its availabilty and create one if needed.");
+        }
+        await this.reservationRepo.delete(obj.id);
     }
 
     async getBookById(bookId) {
@@ -33,6 +41,26 @@ class BookService {
         }
 
         return book;
+    }
+
+    async getUserBorrowingRecords(userId) {
+        await this.recordRepo.get({ userId })
+    }
+
+    async listBooks({ offset, limit }) {
+        const books = await this.repository.getBooks({ filter: {}, offset, limit });
+
+        return books;
+    }
+
+    async makeReservation(bookId, userId) {
+        const book = await this.getBookById(bookId);
+        if (book.copiesAvailable > 0) {
+            throw new ServiceError("Cannot reserve this book because copies are currently available for borrowing");
+        }
+        await this.reservationRepo.create(bookId, userId);
+
+        return true;
     }
 
     async recordBorrow(isbn, userId) {
@@ -66,30 +94,6 @@ class BookService {
         }
     }
 
-    async deleteBook(bookId) {
-        const success = await this.repository.delete({ id: bookId });
-        if (!success) {
-            throw new ServiceError("Delete operation failed. Try again.");
-        }
-    }
-
-    async makeReservation(bookId, userId) {
-        const book = await this.getBookById(bookId);
-        if (book.copiesAvailable > 0) {
-            throw new ServiceError("Cannot reserve this book because copies are currently available for borrowing");
-        }
-        await this.reservationRepo.create(bookId, userId);
-
-        return true;
-    }
-
-    async deleteBookReservation(bookId, userId) {
-        const obj = await this.reservationRepo.get(bookId, userId);
-        if (!obj) {
-            throw new ServiceError("You do not have a reservation for this book. Check its availabilty and create one if needed.");
-        }
-        await this.reservationRepo.delete(obj.id);
-    }
 }
 
 

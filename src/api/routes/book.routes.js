@@ -54,5 +54,13 @@ module.exports = (() => {
         controller.DeleteBookReservation.bind(controller)
     );
 
+    /**
+     *
+     */
+    router.get(
+        "/history",
+        controller.UserBorrowHistory.bind(controller)
+    );
+
     return router;
 })();

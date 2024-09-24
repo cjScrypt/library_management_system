@@ -82,6 +82,17 @@ class BookController {
             next(error);
         }
     }
+
+    async UserBorrowHistory(req, res, next) {
+        try {
+            const userId = req.user.id;
+            const records = await this.service.getRecords(userId);
+
+            return formatResponse(res, 200, records);
+        } catch(error) {
+            next(error);
+        }
+    }
 }
 
 
