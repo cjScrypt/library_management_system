@@ -36,5 +36,21 @@ module.exports = (() => {
     router.post(
         "/return",
         controller.ReturnBook.bind(controller)
-    )
+    );
+
+    /**
+     *
+     */
+    router.post(
+        "/reserve",
+        controller.ReserveBook.bind(controller)
+    );
+
+    /**
+     *
+     */
+    router.delete(
+        "/reserve",
+        controller.DeleteReservedBook(controller)
+    );
 })

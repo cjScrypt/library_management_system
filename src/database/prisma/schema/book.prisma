@@ -5,4 +5,5 @@ model Book {
     copiesAvailable     Int
     pages               Int
     records             Record[]
+    reservations        Reservation[]
 }

@@ -9,7 +9,7 @@ class BookController {
     async GetBookByISBN(req, res, next) {
         try {
             const { isbn } = req.param;
-            const book = await this.service.getBookByISBN(isbn);
+            const book = await this.service.getBookById(isbn);
 
             return formatResponse(res, 200, book);
         } catch(error) {
@@ -49,8 +49,35 @@ class BookController {
             await this.service.recordReturn(isbn, userId);
 
             const responseData = { message: "Successful returned book." }
-
             return formatResponse(res, 200, )
+        } catch(error) {
+            next(error);
+        }
+    }
+
+    async ReserveBook(req, res, next) {
+        try {
+            const { isbn } = req.body;
+            const userId = req.user.id;
+
+            await this.service.makeReservation(isbn, userId);
+
+            const responseData = { message: "Book successfully reserved. You will get a notification when one is available." }
+            return formatResponse(res, 200, responseData );
+        } catch(error) {
+            next(error);
+        }
+    }
+
+    async DeleteBookReservation(req, res, next) {
+        try {
+            const { isbn } = req.body;
+            const userId = req.user.id;
+
+            await this.service.deleteBookReservation(isbn, userId);
+
+            const responseData = { message: "Book reservation successfully deleted." }
+            return formatResponse(res, 200, responseData);
         } catch(error) {
             next(error);
         }

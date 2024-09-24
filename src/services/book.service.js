@@ -1,4 +1,7 @@
-const { BookRepository, RecordRepository, UserRepository } = require("../database/repository");
+const {
+    BookRepository, RecordRepository,
+    ReservationRepository, UserRepository
+} = require("../database/repository");
 const { ServiceError } = require("../utils/appErrors");
 
 
@@ -6,6 +9,7 @@ class BookService {
     constructor() {
         this.repository = new BookRepository();
         this.recordRepo = new RecordRepository();
+        this.reservationRepo = new ReservationRepository();
 
         this.userRepo = new UserRepository();
     }
@@ -22,8 +26,8 @@ class BookService {
         return books;
     }
 
-    async getBookByISBN(isbn) {
-        let book = await this.repository.getBooks({ filter: { isbn } });
+    async getBookById(bookId) {
+        let book = await this.repository.getBooks({ filter: { id: bookId } });
         if (!book) {
             throw new ServiceError("Book not found.");
         }
@@ -32,7 +36,7 @@ class BookService {
     }
 
     async recordBorrow(isbn, userId) {
-        const book = await this.getBookByISBN(isbn);
+        const book = await this.getBookById(isbn);
         if (book.copiesAvailable == 0) {
             throw new ServiceError("No copies of this book is available at this time.");
         }
@@ -67,6 +71,24 @@ class BookService {
         if (!success) {
             throw new ServiceError("Delete operation failed. Try again.");
         }
+    }
+
+    async makeReservation(bookId, userId) {
+        const book = await this.getBookById(bookId);
+        if (book.copiesAvailable > 0) {
+            throw new ServiceError("Cannot reserve this book because copies are currently available for borrowing");
+        }
+        await this.reservationRepo.create(bookId, userId);
+
+        return true;
+    }
+
+    async deleteBookReservation(bookId, userId) {
+        const obj = await this.reservationRepo.getReservation(bookId, userId);
+        if (!obj) {
+            throw new ServiceError("You do not have a reservation for this book. Try checking for it availability. If not available, you can create a reservation.");
+        }
+        await this.reservationRepo.delete(obj.id);
     }
 }
 
