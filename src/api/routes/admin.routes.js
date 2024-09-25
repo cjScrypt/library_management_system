@@ -45,7 +45,7 @@ module.exports = (() => {
      *
      */
     router.delete(
-        "/books/isbn",
+        "/books/:isbn",
         controller.DeleteBook.bind(controller)
     );
 

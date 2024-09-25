@@ -86,7 +86,7 @@ class BookController {
     async UserBorrowHistory(req, res, next) {
         try {
             const userId = req.user.id;
-            const records = await this.service.getRecords(userId);
+            const records = await this.service.getUserBorrowingRecords(userId);
 
             return formatResponse(res, 200, records);
         } catch(error) {

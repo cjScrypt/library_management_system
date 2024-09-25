@@ -6,17 +6,11 @@ module.exports = (() => {
     const router = Router();
     const controller = new AuthController();
 
-    /**
-     *
-     */
     router.post(
         "/signup",
         controller.Signup.bind(controller)
     );
 
-    /**
-     *
-     */
     router.post(
         "/login",
         controller.Login.bind(controller)

@@ -31,10 +31,10 @@ class AdminController {
 
     async UpdateUser(req, res, next) {
         try {
-            const { username, isAdmin } = req.body;
+            const { username } = req.body;
             const userId = req.params;
 
-            await this.userService.updateProfile(userId, { username, isAdmin });
+            await this.userService.updateProfile(userId, { username });
             const responseData = { message: "Update operation successful" }
 
             return formatResponse(res, 200, responseData);
