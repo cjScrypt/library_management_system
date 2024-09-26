@@ -6,6 +6,31 @@ class UserController {
         this.service = new UserService();
     }
 
+    async AdminListUsers(req, res, next) {
+        try {
+            const { offset, limit } = req.query;
+            const users = await this.service.getAllUsers({ offset, limit });
+
+            return formatResponse(res, 200, users);
+        } catch(error) {
+            next(error);
+        }
+    }
+
+    async AdminUpdateUser(req, res, next) {
+        try {
+            const { username } = req.body;
+            const userId = req.params;
+
+            await this.service.updateProfile(userId, { username });
+            const responseData = { message: "Update operation successful" }
+
+            return formatResponse(res, 200, responseData);
+        } catch(error) {
+            next(error);
+        }
+    }
+
     async ProfileDetails(req, res, next) {
         try {
             const userId = req.user.id;

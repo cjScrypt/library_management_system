@@ -1,0 +1,140 @@
+tags:
+  - name: User
+    description: User
+  - name: Admin
+    description: Admin
+
+
+parameters:
+  offset:
+    name: offset
+    description: The number of items to skip for pagination
+    schema:
+      type: integer
+      minimum: 0
+    in: query
+  limit:
+    name: limit
+    description: The number of items to return in result
+    schema:
+      type: integer
+      minimum: 0
+    in: query
+  bookId:
+    name: bookId
+    description: Book ID, same as it ISBN
+    type: string
+    in: path
+    required: true
+  title:
+    name: title
+    type: string
+    in: formData
+  author:
+    name: author
+    type: string
+    in: formData
+  isbn:
+    name: isbn
+    type: string
+    in: formData
+  copiesAvailable:
+    name: copiesAvailable
+    type: string
+    in: formData
+  pages:
+    name: pages
+    type: string
+    in: formData
+
+
+paths:
+  /books:
+    post:
+      summary: Adds a new book
+      tags: [Admin]
+      parameters:
+        - $ref: "#/parameters/title"
+        - $ref: "#/parameters/author"
+        - $ref: "#/parameters/isbn"
+        - $ref: "#/parameters/copiesAvailable"
+        - $ref: "#/parameters/pages"
+      responses:
+        200:
+          description: Book successfully created
+        400:
+          description: Bad Request
+        403:
+          description: Access Denied
+
+    get:
+      summary: Returns a list of all books
+      tags: [Book]
+      parameters:
+        - $ref: "#/parameters/offset"
+        - $ref: "#/parameters/limit"
+      responses:
+        200:
+          description: 
+
+  /books/{bookId}:
+    delete:
+      summary: Deletes a book using it ID / ISBN
+      tags: [Admin]
+      parameters:
+        - $ref: "#/parameters/bookId"
+      responses:
+        200:
+          description: Delete operation successful.
+
+    get:
+      summary: Returns a book object using it ID
+      tags: [Book]
+      parameters:
+        - $ref: "#/parameters/offset"
+        - $ref: "#/parameters/limit"
+      responses:
+        200:
+          description: 
+
+    put:
+      summary: Updates a book
+      tags: [Admin]
+      parameters:
+        - name: bookId
+          description: Book ID, same as it ISBN
+          in: path
+          required: true
+        - $ref: "#/parameters/title"
+        - $ref: "#/parameters/author"
+        - $ref: "#/parameters/isbn"
+        - $ref: "#/parameters/copiesAvailable"
+        - $ref: "#/parameters/pages"
+      responses:
+        200:
+          description: Update successful
+
+
+  /borrow:
+    post:
+      summary: 
+      tags: [Book]
+
+  /return:
+    post:
+      summary:
+      tags: [Book]
+
+  /reserve:
+    delete:
+      summary:
+      tags: [Book]
+    post:
+      summary:
+      tags: [Book]
+
+  /history:
+    get:
+      summary:
+      tags: [Book]
+      

@@ -6,7 +6,58 @@ class BookController {
         this.service = new BookService();
     }
 
-    async GetBookByISBN(req, res, next) {
+    async AddBook(req, res, next) {
+        try {
+            const { title, author, isbn, copiesAvailable, pages } = req.body;
+            const book = await this.service.addBook({ title, author, isbn, copiesAvailable, pages });
+
+            return formatResponse(res, 200, book);
+        } catch(error) {
+            next(error);
+        }
+    }
+
+    async BorrowBook(req, res, next) {
+        try {
+            const userId = req.user.id;
+            const { isbn } = req.body;
+
+            const record = await this.service.recordBorrow(isbn, userId);
+
+            return formatResponse(res, 200, record);
+        } catch(error) {
+            next(error);
+        }
+    }
+
+    async DeleteBook(req, res, next) {
+        try {
+            const { bookId } = req.params;
+            await this.service.deleteBook(bookId);
+
+            const responseData = { message: "Delete operation successful" }
+
+            return formatResponse(res, 200, responseData);
+        } catch(error) {
+            next(error);
+        }
+    }
+
+    async DeleteBookReservation(req, res, next) {
+        try {
+            const { isbn } = req.body;
+            const userId = req.user.id;
+
+            await this.service.deleteBookReservation(isbn, userId);
+
+            const responseData = { message: "Book reservation successfully deleted." }
+            return formatResponse(res, 200, responseData);
+        } catch(error) {
+            next(error);
+        }
+    }
+
+    async GetBookById(req, res, next) {
         try {
             const { isbn } = req.param;
             const book = await this.service.getBookById(isbn);
@@ -28,14 +79,15 @@ class BookController {
         }
     }
 
-    async BorrowBook(req, res, next) {
+    async ReserveBook(req, res, next) {
         try {
-            const userId = req.user.id;
             const { isbn } = req.body;
+            const userId = req.user.id;
 
-            const record = await this.service.recordBorrow(isbn, userId);
+            await this.service.makeReservation(isbn, userId);
 
-            return formatResponse(res, 200, record);
+            const responseData = { message: "Book successfully reserved. You will get a notification when one is available." }
+            return formatResponse(res, 200, responseData );
         } catch(error) {
             next(error);
         }
@@ -55,29 +107,16 @@ class BookController {
         }
     }
 
-    async ReserveBook(req, res, next) {
+    async UpdateBook(req, res, next) {
         try {
-            const { isbn } = req.body;
-            const userId = req.user.id;
+            const { bookId } = req.params;
+            const { title, author, copiesAvailable, pages } = req.body;
+            await this.service.updateBook(
+                bookId,
+                { title, author, copiesAvailable, pages }
+            );
 
-            await this.service.makeReservation(isbn, userId);
-
-            const responseData = { message: "Book successfully reserved. You will get a notification when one is available." }
-            return formatResponse(res, 200, responseData );
-        } catch(error) {
-            next(error);
-        }
-    }
-
-    async DeleteBookReservation(req, res, next) {
-        try {
-            const { isbn } = req.body;
-            const userId = req.user.id;
-
-            await this.service.deleteBookReservation(isbn, userId);
-
-            const responseData = { message: "Book reservation successfully deleted." }
-            return formatResponse(res, 200, responseData);
+            return formatResponse(res, 200, { message: "Update operation successful" });
         } catch(error) {
             next(error);
         }

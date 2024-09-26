@@ -11,15 +11,14 @@ const swaggerOptions = {
             version: "1.0.0",
         },
     },
-    apis: ["./src/api/docs/*.yaml", "./src/api/routes/*.routes.js"]
-    
+    apis: ["./src/api/docs/*.yaml"]
 }
-
 
 
 module.exports = (app) => {
 
     const openapiSpec = swaggerJsDoc(swaggerOptions);
+    // const openapiSpec = swaggerJsDoc(undefined);
 
     app.use("/docs", swaggerUi.serve, swaggerUi.setup(openapiSpec));
 }

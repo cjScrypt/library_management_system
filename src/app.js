@@ -3,8 +3,7 @@ const cors = require("cors");
 const configSwagger = require("./utils/swagger");
 
 const {
-    AdminRouter, AuthRouter,
-    BookRouter, UserRouter
+    AuthRouter, BookRouter, UserRouter
 } = require("./api/routes");
 
 module.exports = (app) => {
@@ -16,6 +15,6 @@ module.exports = (app) => {
     configSwagger(app);
 
     app.use("/auth", AuthRouter);
-    app.use("/admin", AdminRouter);
-    app.use("/user", UserRouter);
+    app.use("/books", BookRouter);
+    app.use("/users", UserRouter);
 }
