@@ -6,7 +6,7 @@ tags:
 
 
 paths:
-  /:
+  /users:
     get:
       summary: Returns a list of users
       tags: [Admin, User]
@@ -17,7 +17,7 @@ paths:
         200:
           description:
 
-  /me:
+  /users/me:
     get:
       summary: Returns data about the currently authenticated user
       tags: [User]
@@ -26,7 +26,7 @@ paths:
       tags: [Admin, User]
       parameters:
 
-  /{userid}:
+  /users/{userid}:
     put:
       summary: Admin endpoint to update a user's profile using their user ID
       tags: [User]

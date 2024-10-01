@@ -1,8 +1,10 @@
 tags:
   - name: User
-    description: User
+    description: 
   - name: Admin
     description: Admin
+  - name: Book
+    description: Book Management
 
 
 parameters:
@@ -115,17 +117,17 @@ paths:
           description: Update successful
 
 
-  /borrow:
+  /books/borrow:
     post:
       summary: 
       tags: [Book]
 
-  /return:
+  /books/return:
     post:
       summary:
       tags: [Book]
 
-  /reserve:
+  /books/reserve:
     delete:
       summary:
       tags: [Book]
