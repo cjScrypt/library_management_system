@@ -6,7 +6,9 @@ const {
     AuthRouter, BookRouter, UserRouter
 } = require("./api/routes");
 
-module.exports = (app) => {
+module.exports = () => {
+
+    const app = express();
 
     app.use(express.json({ limit: "1mb" }));
     app.use(express.urlencoded());
@@ -17,4 +19,6 @@ module.exports = (app) => {
     app.use("/auth", AuthRouter);
     app.use("/books", BookRouter);
     app.use("/users", UserRouter);
+
+    return app
 }
