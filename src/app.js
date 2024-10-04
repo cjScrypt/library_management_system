@@ -6,7 +6,7 @@ const {
     AuthRouter, BookRouter, UserRouter
 } = require("./api/routes");
 
-module.exports = () => {
+module.exports = (() => {
 
     const app = express();
 
@@ -21,4 +21,4 @@ module.exports = () => {
     app.use("/users", UserRouter);
 
     return app
-}
+})();
