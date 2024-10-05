@@ -1,5 +1,6 @@
 const passport = require("passport");
 
+const appErrorHandler = require("./error-handler");
 const { AuthenticationError, AccessForbiddenError } = require("../../utils/appErrors");
 
 
@@ -23,6 +24,7 @@ const isAdmin = (req, res, next) => {
 
 
 module.exports = {
+    appErrorHandler,
     isAdmin,
     isAuthenticated,
 }

@@ -24,6 +24,8 @@ const generateSalt = async (saltRounds) => {
 const hashPassword = async (password) => {
     const salt = await generateSalt(10);
     const hash = await bcrypt.hash(password, salt);
+
+    return hash;
 }
 
 

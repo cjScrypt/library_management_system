@@ -2,7 +2,7 @@ const {
     BookRepository, RecordRepository,
     ReservationRepository, UserRepository
 } = require("../database/repository");
-const { ServiceError } = require("../utils/appErrors");
+const { BadRequest } = require("../utils/appErrors");
 
 
 class BookService {
@@ -23,13 +23,13 @@ class BookService {
     async deleteBook(bookId) {
         const success = await this.repository.delete({ id: bookId });
         if (!success) {
-            throw new ServiceError("Delete operation failed. Try again.");
+            throw new BadRequest({ message: "Delete operation failed. Try again." });
         }
     }
     async deleteBookReservation(bookId, userId) {
         const obj = await this.reservationRepo.get(bookId, userId);
         if (!obj) {
-            throw new ServiceError("You do not have a reservation for this book. Check its availabilty and create one if needed.");
+            throw new BadRequest({ message: "You do not have a reservation for this book. Check its availabilty and create one if needed." });
         }
         await this.reservationRepo.delete(obj.id);
     }
@@ -37,7 +37,7 @@ class BookService {
     async getBookById(bookId) {
         let book = await this.repository.getBooks({ filter: { id: bookId } });
         if (!book) {
-            throw new ServiceError("Book not found.");
+            throw new BadRequest({ message: "Book not found." });
         }
 
         return book;
@@ -58,7 +58,7 @@ class BookService {
     async makeReservation(bookId, userId) {
         const book = await this.getBookById(bookId);
         if (book.copiesAvailable > 0) {
-            throw new ServiceError("Cannot reserve this book because copies are currently available for borrowing");
+            throw new BadRequest({ message: "Cannot reserve this book because copies are currently available for borrowing" });
         }
         await this.reservationRepo.create(bookId, userId);
 
@@ -68,7 +68,7 @@ class BookService {
     async recordBorrow(isbn, userId) {
         const book = await this.getBookById(isbn);
         if (book.copiesAvailable == 0) {
-            throw new ServiceError("No copies of this book is available at this time.");
+            throw new BadRequest({ message: "No copies of this book is available at this time." });
         }
         await this.repository.reduceAvailableCopies(book.id, 1);
 
@@ -92,7 +92,7 @@ class BookService {
     async updateBook(bookId, updateData) {
         const success = await this.repository.update(bookId, updateData);
         if (!success) {
-            throw new ServiceError("Update operation failed. Try again.");
+            throw new BadRequest({ message: "Update operation failed. Try again." });
         }
     }
 

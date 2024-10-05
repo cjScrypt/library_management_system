@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const configSwagger = require("./utils/swagger");
 
+const { appErrorHandler } = require("./api/middlewares");
 const {
     AuthRouter, BookRouter, UserRouter
 } = require("./api/routes");
@@ -19,6 +20,8 @@ module.exports = (() => {
     app.use("/auth", AuthRouter);
     app.use("/books", BookRouter);
     app.use("/users", UserRouter);
+
+    app.use(appErrorHandler); // Error Handler middleware
 
     return app
 })();
