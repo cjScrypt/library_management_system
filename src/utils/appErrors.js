@@ -64,6 +64,8 @@ class ValidationError extends APIError {
 
 module.exports = {
     APIError,
+    AccessForbiddenError,
+    AuthenticationError,
     BadRequest,
     ServiceError,
     ValidationError

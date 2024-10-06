@@ -23,7 +23,7 @@ class UserService {
         });
     }
 
-    async login(username, password) {
+    async login({ username, password }) {
         const user = await this.repository.getUser({ username });
         if (!user) {
             throw new BadRequest({ message: "Invalid username or password." });

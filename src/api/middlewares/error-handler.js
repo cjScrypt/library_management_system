@@ -23,7 +23,11 @@ function appErrorHandler(err, req, res, next) {
         return res.status(err.statusCode).json(responseBody);
     }
 
-    return res.status(500).json({ message: "Internal server error"});
+    console.log("====Error====", err);
+
+    return res.status(500).json({ 
+        error: { message: "Internal server error"}
+    });
 }
 
 

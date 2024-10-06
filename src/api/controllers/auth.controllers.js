@@ -1,9 +1,11 @@
+const { configPassport } = require("../../passport");
 const { UserService } = require("../../services");
 const { formatResponse } = require("../../utils");
 
 class AuthController {
 
     constructor() {
+        configPassport();
         this.userService = new UserService();
     }
 
