@@ -98,6 +98,8 @@ paths:
       responses:
         200:
           description: 
+        404:
+          description: Book not found
 
     put:
       summary: Updates a book

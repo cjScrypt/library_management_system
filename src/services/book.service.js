@@ -36,11 +36,11 @@ class BookService {
 
     async getBookById(bookId) {
         let book = await this.repository.getBooks({ filter: { id: bookId } });
-        if (!book) {
-            throw new BadRequest({ message: "Book not found." });
+        if (book.length == 0) {
+            throw new BadRequest({ message: "Book not found.", statusCode: 404 });
         }
 
-        return book;
+        return book[0];
     }
 
     async getUserBorrowingRecords(userId) {
