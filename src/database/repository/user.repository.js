@@ -26,8 +26,8 @@ class UserRepository {
         return records[records.length - 1];
     }
 
-    async createUser({ username, password }) {
-        const data = { username, password }
+    async createUser({ username, password, isAdmin=false }) {
+        const data = { username, password, isAdmin }
         const user = await prisma.user.create({ data });
 
         return user;

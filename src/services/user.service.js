@@ -11,6 +11,19 @@ class UserService {
         this.repository = new UserRepository();
     }
 
+    async createSuperUser({ username, password }) {
+        const existingUser = await this.repository.getUser({ username });
+        if (existingUser) {
+            return;
+        }
+        const hashedPassword = await hashPassword(password);
+        await this.repository.createUser({
+            username,
+            password: hashedPassword,
+            isAdmin: true
+        });
+    }
+
     async signUp(username, password) {
         const existingUser = await this.repository.getUser({ username });
         if (existingUser) {
