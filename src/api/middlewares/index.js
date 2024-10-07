@@ -29,9 +29,10 @@ const isAdmin = (req, res, next) => {
             throw new AuthenticationError({ message: "Access denied due to invalid or missing credentials" });
         }
 
-        if (req.user.isAdmin) {
+        if (!req.user.isAdmin) {
             throw new AccessForbiddenError({ message: "Access Denied! Not an Admin." });
         }
+        next();
     } catch(error) {
         next(error);
     }

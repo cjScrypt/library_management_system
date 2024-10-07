@@ -23,10 +23,10 @@ paths:
       tags: [User]
     put:
       summary: Updates a user profile
-      tags: [Admin, User]
+      tags: [User]
       parameters:
 
   /users/{userid}:
     put:
       summary: Admin endpoint to update a user's profile using their user ID
-      tags: [User]
+      tags: [Admin, User]

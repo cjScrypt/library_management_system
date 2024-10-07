@@ -16,6 +16,11 @@ module.exports = (() => {
     );
 
     router.put(
+        "/me",
+        controller.UpdateProfile.bind(controller)
+    );
+
+    router.put(
         "/:userId",
         isAdmin,
         controller.AdminUpdateUser.bind(controller)
@@ -24,11 +29,6 @@ module.exports = (() => {
     router.get(
         "/me",
         controller.ProfileDetails.bind(controller)
-    );
-
-    router.put(
-        "/me",
-        controller.UpdateProfile.bind(controller)
     );
 
     return router;

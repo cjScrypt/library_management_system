@@ -55,10 +55,10 @@ class UserRepository {
         return users;
     }
 
-    async update(bookId, updateData) {
+    async update(userId, updateData) {
         try {
             const updatedUser = await prisma.user.update({
-                where: { id: bookId },
+                where: { id: userId },
                 data: updateData
             });
             return true;
