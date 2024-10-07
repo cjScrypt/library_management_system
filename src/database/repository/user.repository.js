@@ -36,7 +36,6 @@ class UserRepository {
     async getUser(filter={}) {
         const user = await prisma.user.findFirst({
             where: filter,
-            omit: { password: true }
         });
         if (!user) {
             return false;
@@ -63,6 +62,7 @@ class UserRepository {
             });
             return true;
         } catch(error) {
+            console.log(error)
             return false;
         }
     }

@@ -4,6 +4,12 @@ const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config");
 
 
+const excludeFields = (user, keys) => {
+    return Object.fromEntries(
+        Object.entries(user).filter(([key]) => !keys.includes(key))
+    );
+}
+
 const formatResponse = (res, statusCode, data={}, headers={}) => {
     return res.status(statusCode).json({ data });
 }
@@ -37,6 +43,7 @@ const verifyPassword = async (password, hashedPassword) => {
 
 
 module.exports = {
+    excludeFields,
     formatResponse,
     generateJwtSignature,
     hashPassword,

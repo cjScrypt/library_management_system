@@ -1,6 +1,6 @@
 const { UserRepository } = require("../database/repository");
 const {
-    generateJwtSignature, hashPassword,
+    excludeFields, generateJwtSignature, hashPassword,
     verifyPassword
 } = require("../utils");
 
@@ -48,6 +48,7 @@ class UserService {
         if (!user) {
             throw new BadRequest({ message: "User not found" });
         }
+        const userWithoutPassword = excludeFields(user, ["password"]);
         return user;
     }
 
