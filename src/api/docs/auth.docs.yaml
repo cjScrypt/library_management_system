@@ -50,13 +50,3 @@ paths:
           description: Validation Error
         401:
           description: Invalid credentials
-
-  /auth/logout:
-    post:
-      summary: Logs out an authenticated user
-      tags: [Auth]
-      responses:
-        200:
-          description: Log out successful
-        401:
-          description: Unauthorized access

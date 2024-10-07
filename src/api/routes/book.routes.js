@@ -1,11 +1,13 @@
 const { Router } = require("express");
 const { BookController } = require("../controllers");
-const { isAdmin } = require("../middlewares");
+const { isAdmin, isAuthenticated } = require("../middlewares");
 
 
 module.exports = (() => {
     const router = Router();
     const controller = new BookController();
+
+    router.use(isAuthenticated);
 
     router.post(
         "/",
