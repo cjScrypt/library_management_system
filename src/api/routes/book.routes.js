@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const { BookController } = require("../controllers");
 const { isAdmin, isAuthenticated } = require("../middlewares");
+const { body } = require("express-validator");
 
 
 module.exports = (() => {
@@ -12,6 +13,8 @@ module.exports = (() => {
     router.post(
         "/",
         isAdmin,
+        body(["title", "author", "isbn"]).notEmpty().withMessage("Field missing").escape(),
+        body(["copiesAvailable", "pages"]).isInt().withMessage("Field must be an integer").toInt(),
         controller.AddBook.bind(controller)
     );
 
