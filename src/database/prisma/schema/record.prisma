@@ -1,8 +1,8 @@
 model Record {
-    id              Int          @id
+    id              Int          @id @default(autoincrement())
     status          RECORD_STATUS
     dateBorrowed    DateTime        @default(now())
-    dateReturned    DateTime
+    dateReturned    DateTime?
     book            Book            @relation(fields: [bookId], references: [id])
     bookId          String
     user            User            @relation(fields: [userId], references: [id])
@@ -10,6 +10,6 @@ model Record {
 }
 
 enum RECORD_STATUS {
-    BORROW
-    RETURN
+    NOT_RETURNED
+    RETURNED
 }

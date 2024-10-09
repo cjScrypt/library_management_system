@@ -60,8 +60,9 @@ class BookController {
 
     async GetBookById(req, res, next) {
         try {
-            const { isbn } = req.param;
-            const book = await this.service.getBookById(isbn);
+            const { bookId } = req.params;
+            console.log(`BookId ${bookId}`);
+            const book = await this.service.getBookById(bookId);
 
             return formatResponse(res, 200, book);
         } catch(error) {
@@ -72,7 +73,7 @@ class BookController {
     async ListBooks(req, res, next) {
         try {
             const { offset, limit } = req.query;
-            const responseData = this.service.listBooks({ offset, limit });
+            const responseData = await this.service.listBooks({ offset, limit });
 
             return formatResponse(res, 200, responseData);
         } catch(error) {
@@ -102,7 +103,7 @@ class BookController {
             await this.service.recordReturn(isbn, userId);
 
             const responseData = { message: "Successful returned book." }
-            return formatResponse(res, 200, )
+            return formatResponse(res, 200, responseData);
         } catch(error) {
             next(error);
         }

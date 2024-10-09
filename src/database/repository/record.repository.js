@@ -15,7 +15,7 @@ class RecordRepository {
             where: {
                 bookId,
                 userId,
-                status: "BORROW"
+                status: "NOT_RETURNED"
             }
         });
 

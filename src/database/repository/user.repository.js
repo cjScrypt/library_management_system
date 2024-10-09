@@ -6,7 +6,7 @@ class UserRepository {
 
     async addRecord(userId, bookId) {
         const recordData = { 
-            status: "BORROW",
+            status: "NOT_RETURNED",
             dateBorrowed: new Date(),
             bookId,
         }
@@ -18,7 +18,7 @@ class UserRepository {
                     create: [ recordData ]
                 },
             },
-            include: { posts: true }
+            include: { records: true }
         });
 
         const records = result.records;
@@ -62,7 +62,6 @@ class UserRepository {
             });
             return true;
         } catch(error) {
-            console.log(error)
             return false;
         }
     }

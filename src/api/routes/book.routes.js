@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const { BookController } = require("../controllers");
 const { isAdmin, isAuthenticated } = require("../middlewares");
-const { body } = require("express-validator");
+const { body, param } = require("express-validator");
 
 
 module.exports = (() => {
@@ -16,6 +16,11 @@ module.exports = (() => {
         body(["title", "author", "isbn"]).notEmpty().withMessage("Field missing").escape(),
         body(["copiesAvailable", "pages"]).isInt().withMessage("Field must be an integer").toInt(),
         controller.AddBook.bind(controller)
+    );
+
+    router.get(
+        "/history",
+        controller.UserBorrowHistory.bind(controller)
     );
 
     router.delete(
@@ -37,6 +42,7 @@ module.exports = (() => {
 
     router.get(
         "/:bookId",
+        param("bookId").notEmpty().withMessage("Field missing").escape(),
         controller.GetBookById.bind(controller)
     );
 
@@ -58,11 +64,6 @@ module.exports = (() => {
     router.delete(
         "/reserve",
         controller.DeleteBookReservation.bind(controller)
-    );
-
-    router.get(
-        "/history",
-        controller.UserBorrowHistory.bind(controller)
     );
 
     return router;

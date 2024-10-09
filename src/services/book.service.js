@@ -44,7 +44,7 @@ class BookService {
     }
 
     async getUserBorrowingRecords(userId) {
-        const records = await this.recordRepo.getUserRecords({ userId });
+        const records = await this.recordRepo.getUserRecords(userId);
 
         return records;
     }

@@ -12,6 +12,7 @@ class BookRepository {
 
     async getBooks({ filter={}, offset=0, limit=20 }) {
         const books = await prisma.book.findMany({
+            where: filter,
             skip: offset,
             take: limit,
         });
@@ -19,9 +20,9 @@ class BookRepository {
         return books;
     }
 
-    async reduceAvailableCopies(isbn, count) {
+    async reduceAvailableCopies(bookId, count) {
         await prisma.book.update({
-            where: { isbn },
+            where: { id: bookId },
             data: {
                 copiesAvailable: { decrement: count }
             }

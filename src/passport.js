@@ -3,6 +3,7 @@ const { Strategy, ExtractJwt } = require("passport-jwt");
 
 const { JWT_SECRET } = require("./config");
 const { UserRepository } = require("./database/repository");
+const { AuthenticationError } = require("./utils/appErrors");
 
 
 const configPassport = () => {
@@ -17,8 +18,10 @@ const configPassport = () => {
         if (user) {
             done(null, user);
         } else {
-            // TODO: throw error here
-            // done(null, false);
+            const errorMessage = "Access denied due to invalid or missing credentials";
+            const error = new AuthenticationError({ message: errorMessage });
+
+            done(error, false);
         }
     });
 

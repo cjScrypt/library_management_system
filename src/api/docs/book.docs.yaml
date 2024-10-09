@@ -105,13 +105,9 @@ paths:
       summary: Updates a book
       tags: [Admin]
       parameters:
-        - name: bookId
-          description: Book ID, same as it ISBN
-          in: path
-          required: true
+        - $ref: "#/parameters/bookId"
         - $ref: "#/parameters/title"
         - $ref: "#/parameters/author"
-        - $ref: "#/parameters/isbn"
         - $ref: "#/parameters/copiesAvailable"
         - $ref: "#/parameters/pages"
       responses:
@@ -123,11 +119,16 @@ paths:
     post:
       summary: 
       tags: [Book]
+      parameters:
+        - $ref: "#/parameters/isbn"
+
 
   /books/return:
     post:
       summary:
       tags: [Book]
+      parameters:
+        - $ref: "#/parameters/isbn"
 
   /books/reserve:
     delete:
@@ -137,7 +138,7 @@ paths:
       summary:
       tags: [Book]
 
-  /history:
+  /books/history:
     get:
       summary:
       tags: [Book]
