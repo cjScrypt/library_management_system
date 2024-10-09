@@ -1,0 +1,25 @@
+tags:
+  name: Admin
+  description: Admin
+
+parameters:
+  title:
+    name: title
+    type: string
+    in: formData
+  author:
+    name: author
+    type: string
+    in: formData
+  isbn:
+    name: isbn
+    type: string
+    in: formData
+  copiesAvailable:
+    name: copiesAvailable
+    type: string
+    in: formData
+  pages:
+    name: pages
+    type: string
+    in: formData

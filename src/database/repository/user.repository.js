@@ -6,7 +6,7 @@ class UserRepository {
 
     async addRecord(userId, bookId) {
         const recordData = { 
-            status: "BORROW",
+            status: "NOT_RETURNED",
             dateBorrowed: new Date(),
             bookId,
         }
@@ -18,7 +18,7 @@ class UserRepository {
                     create: [ recordData ]
                 },
             },
-            include: { posts: true }
+            include: { records: true }
         });
 
         const records = result.records;
@@ -26,8 +26,8 @@ class UserRepository {
         return records[records.length - 1];
     }
 
-    async createUser({ username, password }) {
-        const data = { username, password }
+    async createUser({ username, password, isAdmin=false }) {
+        const data = { username, password, isAdmin }
         const user = await prisma.user.create({ data });
 
         return user;
@@ -35,7 +35,7 @@ class UserRepository {
 
     async getUser(filter={}) {
         const user = await prisma.user.findFirst({
-            where: filter
+            where: filter,
         });
         if (!user) {
             return false;
@@ -54,10 +54,10 @@ class UserRepository {
         return users;
     }
 
-    async update(bookId, updateData) {
+    async update(userId, updateData) {
         try {
             const updatedUser = await prisma.user.update({
-                where: { id: bookId },
+                where: { id: userId },
                 data: updateData
             });
             return true;

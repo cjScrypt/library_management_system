@@ -1,0 +1,145 @@
+tags:
+  - name: User
+    description: 
+  - name: Admin
+    description: Admin
+  - name: Book
+    description: Book Management
+
+
+parameters:
+  offset:
+    name: offset
+    description: The number of items to skip for pagination
+    schema:
+      type: integer
+      minimum: 0
+    in: query
+  limit:
+    name: limit
+    description: The number of items to return in result
+    schema:
+      type: integer
+      minimum: 0
+    in: query
+  bookId:
+    name: bookId
+    description: Book ID, same as it ISBN
+    type: string
+    in: path
+    required: true
+  title:
+    name: title
+    type: string
+    in: formData
+  author:
+    name: author
+    type: string
+    in: formData
+  isbn:
+    name: isbn
+    type: string
+    in: formData
+  copiesAvailable:
+    name: copiesAvailable
+    type: string
+    in: formData
+  pages:
+    name: pages
+    type: string
+    in: formData
+
+
+paths:
+  /books:
+    post:
+      summary: Adds a new book
+      tags: [Admin]
+      parameters:
+        - $ref: "#/parameters/title"
+        - $ref: "#/parameters/author"
+        - $ref: "#/parameters/isbn"
+        - $ref: "#/parameters/copiesAvailable"
+        - $ref: "#/parameters/pages"
+      responses:
+        200:
+          description: Book successfully created
+        400:
+          description: Bad Request
+        403:
+          description: Access Denied
+
+    get:
+      summary: Returns a list of all books
+      tags: [Book]
+      parameters:
+        - $ref: "#/parameters/offset"
+        - $ref: "#/parameters/limit"
+      responses:
+        200:
+          description: 
+
+  /books/{bookId}:
+    delete:
+      summary: Deletes a book using it ID / ISBN
+      tags: [Admin]
+      parameters:
+        - $ref: "#/parameters/bookId"
+      responses:
+        200:
+          description: Delete operation successful.
+
+    get:
+      summary: Returns a book object using it ID
+      tags: [Book]
+      parameters:
+        - $ref: "#/parameters/offset"
+        - $ref: "#/parameters/limit"
+      responses:
+        200:
+          description: 
+        404:
+          description: Book not found
+
+    put:
+      summary: Updates a book
+      tags: [Admin]
+      parameters:
+        - $ref: "#/parameters/bookId"
+        - $ref: "#/parameters/title"
+        - $ref: "#/parameters/author"
+        - $ref: "#/parameters/copiesAvailable"
+        - $ref: "#/parameters/pages"
+      responses:
+        200:
+          description: Update successful
+
+
+  /books/borrow:
+    post:
+      summary: 
+      tags: [Book]
+      parameters:
+        - $ref: "#/parameters/isbn"
+
+
+  /books/return:
+    post:
+      summary:
+      tags: [Book]
+      parameters:
+        - $ref: "#/parameters/isbn"
+
+  /books/reserve:
+    delete:
+      summary:
+      tags: [Book]
+    post:
+      summary:
+      tags: [Book]
+
+  /books/history:
+    get:
+      summary:
+      tags: [Book]
+      

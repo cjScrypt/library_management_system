@@ -1,20 +1,33 @@
 const { UserRepository } = require("../database/repository");
 const {
-    generateJwtSignature, hashPassword,
+    excludeFields, generateJwtSignature, hashPassword,
     verifyPassword
 } = require("../utils");
 
-const { ServiceError } = require("../utils/appErrors");
+const { BadRequest } = require("../utils/appErrors");
 
 class UserService {
     constructor() {
         this.repository = new UserRepository();
     }
 
+    async createSuperUser({ username, password }) {
+        const existingUser = await this.repository.getUser({ username });
+        if (existingUser) {
+            return;
+        }
+        const hashedPassword = await hashPassword(password);
+        await this.repository.createUser({
+            username,
+            password: hashedPassword,
+            isAdmin: true
+        });
+    }
+
     async signUp(username, password) {
         const existingUser = await this.repository.getUser({ username });
         if (existingUser) {
-            throw new ServiceError("User with this username exists");
+            throw new BadRequest({ message: "User with this username exists" });
         }
         const hashedPassword = await hashPassword(password);
         await this.repository.createUser({
@@ -23,14 +36,14 @@ class UserService {
         });
     }
 
-    async login(username, password) {
+    async login({ username, password }) {
         const user = await this.repository.getUser({ username });
         if (!user) {
-            throw new ServiceError("Invalid username or password.");
+            throw new BadRequest({ message: "Invalid username or password." });
         }
         const isValidPassword = await verifyPassword(password, user.password);
         if (!isValidPassword) {
-            throw new ServiceError("Invalid username or password.");
+            throw new BadRequest({ message: "Invalid username or password." });
         }
         const token = generateJwtSignature({ id: user.id });
 
@@ -46,8 +59,9 @@ class UserService {
     async getProfile(userId) {
         const user = await this.repository.getUser({ id: userId });
         if (!user) {
-            throw new ServiceError("User not found");
+            throw new BadRequest({ message: "User not found" });
         }
+        const userWithoutPassword = excludeFields(user, ["password"]);
         return user;
     }
 
@@ -56,7 +70,7 @@ class UserService {
 
         const success = await this.repository.update(userId, updateData);
         if (!success) {
-            throw new ServiceError("Profile update not successful. Try again");
+            throw new BadRequest({ message: "Profile update not successful. Try again" });
         }
     }
 }

@@ -1,0 +1,32 @@
+tags:
+  - name: User
+    description: User
+  - name: Admin
+    description: Admin
+
+
+paths:
+  /users:
+    get:
+      summary: Returns a list of users
+      tags: [Admin, User]
+      parameters:
+        - $ref: "#/parameters/offset"
+        - $ref: "#/parameters/limit"
+      responses:
+        200:
+          description:
+
+  /users/me:
+    get:
+      summary: Returns data about the currently authenticated user
+      tags: [User]
+    put:
+      summary: Updates a user profile
+      tags: [User]
+      parameters:
+
+  /users/{userid}:
+    put:
+      summary: Admin endpoint to update a user's profile using their user ID
+      tags: [Admin, User]
