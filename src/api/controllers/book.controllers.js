@@ -10,6 +10,7 @@ class BookController {
     async AddBook(req, res, next) {
         try {
             const { title, author, isbn, copiesAvailable, pages } = getRequestData(req)["body"];
+            console.log(`title ${title}`);
             const book = await this.service.addBook({ title, author, isbn, copiesAvailable, pages });
 
             return formatResponse(res, 200, book);

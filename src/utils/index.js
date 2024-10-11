@@ -2,6 +2,19 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const { JWT_SECRET } = require("../config");
+const prisma = require("../database/prisma/client");
+
+
+const clearAllSchemas = async () => {
+    try {
+        // await prisma.record.deleteMany({});
+        // await prisma.book.deleteMany({});
+        // await prisma.reservation.deleteMany({});
+        await prisma.user.deleteMany({});
+    } catch(error) {
+        console.log(`Error clearing schema: ${error}`);
+    }
+}
 
 
 const excludeFields = (user, keys) => {
@@ -43,6 +56,7 @@ const verifyPassword = async (password, hashedPassword) => {
 
 
 module.exports = {
+    clearAllSchemas,
     excludeFields,
     formatResponse,
     generateJwtSignature,

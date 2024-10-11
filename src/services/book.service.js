@@ -80,7 +80,7 @@ class BookService {
     async recordReturn(isbn, userId) {
         const record = await this.recordRepo.getBorrowedBookRecord({ bookId: isbn, userId });
         const updateData = {
-            status: "RETURN",
+            status: "RETURNED",
             dateReturned: new Date()
         }
 

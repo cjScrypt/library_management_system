@@ -12,6 +12,7 @@ module.exports = (() => {
 
     router.post(
         "/",
+        (req, res, next) => {console.log(`${req.body}`); next()},
         isAdmin,
         body(["title", "author", "isbn"]).notEmpty().withMessage("Field missing").escape(),
         body(["copiesAvailable", "pages"]).isInt().withMessage("Field must be an integer").toInt(),
