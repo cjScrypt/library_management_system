@@ -83,6 +83,9 @@ class BookService {
             status: "RETURN",
             dateReturned: new Date()
         }
+        if (!record) {
+            throw new BadRequest({ message: "No borrow record found"});
+        }
 
         const updatedRecord = await this.recordRepo.update(record.id, updateData);
 
