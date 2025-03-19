@@ -2,6 +2,7 @@ const { Router } = require("express");
 
 const { UserController } = require("../controllers");
 const { isAuthenticated, isAdmin } = require("../middlewares");
+const { param } = require("express-validator");
 
 module.exports = (() => {
     const router = Router();
@@ -23,6 +24,7 @@ module.exports = (() => {
     router.put(
         "/:userId",
         isAdmin,
+        param("userId").notEmpty().toInt(),
         controller.AdminUpdateUser.bind(controller)
     );
 
