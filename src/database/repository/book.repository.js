@@ -29,6 +29,15 @@ class BookRepository {
         });
     }
 
+    async increaseAvailableCopies(bookId, count) {
+        await prisma.book.update({
+            where: { id: bookId },
+            data: {
+                copiesAvailable: { increment: count }
+            }
+        });
+    }
+
     async update(bookId, updateData) {
         try {
             await prisma.book.update({

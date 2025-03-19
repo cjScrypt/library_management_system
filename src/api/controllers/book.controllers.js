@@ -61,7 +61,6 @@ class BookController {
     async GetBookById(req, res, next) {
         try {
             const { bookId } = req.params;
-            console.log(`BookId ${bookId}`);
             const book = await this.service.getBookById(bookId);
 
             return formatResponse(res, 200, book);

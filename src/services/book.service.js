@@ -1,3 +1,4 @@
+const { RECORD_STATUS } = require("@prisma/client");
 const {
     BookRepository, RecordRepository,
     ReservationRepository, UserRepository
@@ -78,14 +79,17 @@ class BookService {
     }
 
     async recordReturn(isbn, userId) {
-        const record = await this.recordRepo.getBorrowedBookRecord({ bookId: isbn, userId });
+        const record = await this.recordRepo.getBorrowedBookRecord({
+            bookId: isbn, userId
+        });
         const updateData = {
-            status: "RETURN",
+            status: RECORD_STATUS.RETURNED,
             dateReturned: new Date()
         }
         if (!record) {
             throw new BadRequest({ message: "No borrow record found"});
         }
+        await this.repository.increaseAvailableCopies(isbn, 1);
 
         const updatedRecord = await this.recordRepo.update(record.id, updateData);
 
