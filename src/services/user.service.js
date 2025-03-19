@@ -62,7 +62,7 @@ class UserService {
             throw new BadRequest({ message: "User not found" });
         }
         const userWithoutPassword = excludeFields(user, ["password"]);
-        return user;
+        return userWithoutPassword;
     }
 
     async updateProfile(userId, updateData) {
