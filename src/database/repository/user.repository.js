@@ -1,3 +1,4 @@
+const { RECORD_STATUS } = require("@prisma/client");
 const prisma = require("../prisma/client");
 
 
@@ -6,7 +7,7 @@ class UserRepository {
 
     async addRecord(userId, bookId) {
         const recordData = { 
-            status: "NOT_RETURNED",
+            status: RECORD_STATUS.NOT_RETURNED,
             dateBorrowed: new Date(),
             bookId,
         }
