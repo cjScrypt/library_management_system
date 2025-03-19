@@ -20,7 +20,7 @@ class UserController {
     async AdminUpdateUser(req, res, next) {
         try {
             const { username } = req.body;
-            const userId = req.params;
+            const { userId } = req.params;
 
             await this.service.updateProfile(userId, { username });
             const responseData = { message: "Update operation successful" }
